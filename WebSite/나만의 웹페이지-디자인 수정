@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>나의 시작 페이지</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fff; --text:#202124; --muted:#70757a; --line:#dfe1e5; --hover:#f1f3f4;
+  --box:#fff; --shadow:0 1px 6px rgba(32,33,36,.28);
+  --blue:#4285f4; --red:#ea4335; --yellow:#fbbc05; --green:#34a853;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#202124; --text:#e8eaed; --muted:#9aa0a6; --line:#5f6368; --hover:#303134;
+    --box:#303134; --shadow:0 1px 6px rgba(0,0,0,.6);
+    --blue:#8ab4f8; --red:#f28b82; --yellow:#fdd663; --green:#81c995;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#202124; --text:#e8eaed; --muted:#9aa0a6; --line:#5f6368; --hover:#303134;
+  --box:#303134; --shadow:0 1px 6px rgba(0,0,0,.6);
+  --blue:#8ab4f8; --red:#f28b82; --yellow:#fdd663; --green:#81c995;
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--text);
+  font-family:"Roboto","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
+  display:flex;flex-direction:column;align-items:center;padding:0 20px}
+main{width:100%;max-width:584px;margin-top:max(8vh,48px);text-align:center}
+.time{font-size:clamp(3.4rem,17vw,5.6rem);font-weight:500;letter-spacing:-.03em;line-height:1;
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.time span:nth-child(6n+1){color:var(--blue)} .time span:nth-child(6n+2){color:var(--red)}
+.time span:nth-child(6n+3){color:var(--yellow)} .time span:nth-child(6n+4){color:var(--blue)}
+.time span:nth-child(6n+5){color:var(--green)} .time span:nth-child(6n+6){color:var(--red)}
+.ap{font-size:.3em;color:var(--muted);font-weight:400;margin-right:.4em;letter-spacing:0}
+.date{margin:14px 0 30px;font-size:1rem;color:var(--muted)}
+.search{display:flex;align-items:center;height:46px;padding:0 14px;background:var(--box);
+  border:1px solid var(--line);border-radius:24px;transition:box-shadow .15s}
+.search:hover,.search:focus-within{box-shadow:var(--shadow);border-color:transparent}
+.search svg{flex:none;width:20px;height:20px;fill:var(--muted)}
+.search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;
+  font:inherit;font-size:1rem;color:var(--text);padding:0 12px}
+.search input::-webkit-search-cancel-button{display:none}
+.engines{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.engines button{font:inherit;font-size:.875rem;color:var(--text);background:var(--hover);
+  border:1px solid var(--hover);border-radius:4px;padding:9px 16px;cursor:pointer}
+.engines button:hover{border-color:var(--line);box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.engines button.on{background:var(--box);border-color:var(--blue);color:var(--blue)}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:44px}
+.tile{display:flex;flex-direction:column;align-items:center;gap:8px;padding:12px 4px;
+  border-radius:8px;text-decoration:none;color:var(--text);font-size:.78rem}
+.tile:hover{background:var(--hover)}
+.ic{width:48px;height:48px;border-radius:50%;background:var(--hover);display:flex;
+  align-items:center;justify-content:center;font-weight:700;font-size:1.2rem;border:1px solid var(--line)}
+.tile:nth-child(1) .ic{color:var(--green)} .tile:nth-child(2) .ic{color:var(--blue)}
+.tile:nth-child(3) .ic{color:var(--red)} .tile:nth-child(4) .ic{color:var(--yellow)}
+.tile:nth-child(5) .ic{color:var(--text)}
+</style>
+</head>
+<body>
+<main>
+  <div class="time" id="time"></div>
+  <div class="date" id="date"></div>
+
+  <form class="search" id="f" role="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+    <input id="q" type="search" placeholder="검색어를 입력하세요" autocomplete="off" autofocus aria-label="검색">
+  </form>
+
+  <div class="engines" id="engines">
+    <button type="button" data-u="https://www.google.com/search?q=">구글 검색</button>
+    <button type="button" data-u="https://search.naver.com/search.naver?query=">네이버 검색</button>
+    <button type="button" data-u="https://www.youtube.com/results?search_query=">유튜브 검색</button>
+    <button type="button" data-u="https://search.daum.net/search?q=">다음 검색</button>
+  </div>
+
+  <nav class="tiles">
+    <a class="tile" href="https://www.naver.com" target="_blank" rel="noopener"><span class="ic">N</span>네이버</a>
+    <a class="tile" href="https://www.google.com" target="_blank" rel="noopener"><span class="ic">G</span>구글</a>
+    <a class="tile" href="https://www.youtube.com" target="_blank" rel="noopener"><span class="ic">▶</span>유튜브</a>
+    <a class="tile" href="https://mail.google.com" target="_blank" rel="noopener"><span class="ic">M</span>메일</a>
+    <a class="tile" href="https://claude.ai" target="_blank" rel="noopener"><span class="ic">C</span>Claude</a>
+  </nav>
+</main>
+
+<script>
+const $ = id => document.getElementById(id);
+const days = ["일","월","화","수","목","금","토"];
+const p = n => String(n).padStart(2,"0");
+function tick(){
+  const d = new Date(), h = d.getHours();
+  const s = `${p(h % 12 || 12)}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+  $("time").innerHTML = `<span class="ap">${h < 12 ? "오전" : "오후"}</span>` +
+    [...s].map(c => `<span>${c}</span>`).join("");
+  $("date").textContent = `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일 ${days[d.getDay()]}요일`;
+}
+tick(); setInterval(tick, 1000);
+
+const btns = [...document.querySelectorAll("#engines button")];
+let cur = btns[0].dataset.u;
+try{ const s = localStorage.getItem("engine"); if(s && btns.some(b => b.dataset.u === s)) cur = s; }catch(e){}
+const mark = () => btns.forEach(b => b.classList.toggle("on", b.dataset.u === cur));
+mark();
+btns.forEach(b => b.addEventListener("click", () => {
+  cur = b.dataset.u; mark();
+  try{ localStorage.setItem("engine", cur); }catch(_){}
+  $("q").focus();
+}));
+
+$("f").addEventListener("submit", e => {
+  e.preventDefault();
+  const q = $("q").value.trim();
+  if(q) window.open(cur + encodeURIComponent(q), "_blank", "noopener");
+});
+</script>
+</body>
+</html>
