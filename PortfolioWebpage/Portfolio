@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>[이름] | 신입 [직무] 개발자 포트폴리오</title>
+<meta name="description" content="[이름] – 신입 [직무] 개발자. [핵심 기술]로 만든 프로젝트와 성과를 30초 안에 확인하세요.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#0f1a3a">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:title" content="[이름] | 신입 [직무] 개발자 포트폴리오">
+<meta property="og:description" content="[한 줄 가치 제안] – 대표 프로젝트와 성과 요약">
+<meta name="twitter:card" content="summary_large_image">
+<!-- 배포 시 추가: canonical, og:url, og:image(절대 URL, 1200x630), favicon -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"[이름]","jobTitle":"신입 [직무] 개발자","url":"[사이트 주소]","sameAs":["[GitHub URL]","[LinkedIn URL]"]}</script>
+<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<!-- 디자인 기준: Astra 스타일(전폭 섹션 밴드, 넓은 컨테이너, 다크 헤더)
+     섹션별 톤(--hue): hero 네이비 / impact 틸 / tech-stack 바이올렛 / projects 오렌지 / case-study 블루 / experience 로즈 / contact 딥 틸 -->
+<style>
+:root{
+  --bg:#f4f5f7; --surface:#ffffff; --line:#d9dde5; --ink:#0e131b; --text:#262e3a; --muted:#5f6a7b;
+  --accent:#0b7a72; --accent-ink:#ffffff; --tint:#e0f1ef; --grid:rgba(14,19,27,.06);
+  --display:"Space Grotesk","Noto Sans KR",system-ui,sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0e14; --surface:#121822; --line:#263040; --ink:#f1f4f8; --text:#d3d9e3; --muted:#98a3b5;
+    --accent:#4fd1c0; --accent-ink:#04201d; --tint:#10302d; --grid:rgba(255,255,255,.05); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0e14; --surface:#121822; --line:#263040; --ink:#f1f4f8; --text:#d3d9e3; --muted:#98a3b5;
+  --accent:#4fd1c0; --accent-ink:#04201d; --tint:#10302d; --grid:rgba(255,255,255,.05); color-scheme:dark;
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 72px);scroll-behavior:smooth;overflow-x:clip}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;overflow-x:clip;background:var(--bg);color:var(--text);font-family:"Noto Sans KR",Pretendard,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:40}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+h1,h2,h3{margin:0;color:var(--ink);line-height:1.2;letter-spacing:-.02em}
+h2{font-size:1.5rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:600}
+p{margin:0}
+
+/* 구조 표시용 (개발 단계 전용: .tag, .ph, .note) */
+.tag{display:inline-block;font:500 .72rem/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--muted);border:1px solid var(--line);padding:0 8px;border-radius:999px;background:var(--surface)}
+.note{color:var(--muted);font-size:.9rem}
+.ph{border:1px dashed var(--line);border-radius:10px;padding:12px 14px;color:var(--muted);font-size:.92rem}
+
+/* 버튼 */
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 24px;border-radius:999px;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:500;transition:background .2s,border-color .2s,color .2s}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.08)}
+
+/* 내비게이션 */
+.site-nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.site-nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;flex-wrap:wrap}
+.site-nav ul{display:flex;align-items:center;gap:22px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.site-nav a{text-decoration:none;color:var(--muted);transition:color .2s}
+.site-nav a:hover{color:var(--ink)}
+.site-nav .btn{padding:8px 18px;color:var(--accent-ink)}
+.logo{font-family:var(--display);font-weight:700;font-size:1.1rem;color:var(--ink)!important;letter-spacing:-.02em}
+
+/* 섹션 공통: 좌측 제목 열 + 우측 본문 열 */
+.sec{display:grid;grid-template-columns:200px minmax(0,1fr);column-gap:48px;row-gap:18px;padding:64px 0;border-top:1px solid var(--line);margin:0}
+.sec>*:not(.sec-head){grid-column:2}
+.sec-head{grid-column:1;grid-row:1 / span 20;align-self:start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 88px);display:grid;gap:12px;justify-items:start}
+.sec-head .meta{display:flex;flex-wrap:wrap;gap:6px}
+@media (max-width:760px){
+  .sec{display:block;padding:44px 0}
+  .sec-head{position:static;margin-bottom:14px}
+  .sec>*:not(.sec-head){margin-top:14px}
+}
+
+/* 개발용 섹션 맵 */
+.sec.outline{display:block;margin-top:32px;padding:20px 22px;border:1px dashed var(--line);border-radius:16px}
+.outline .sec-head{position:static;display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:8px}
+.outline ol{margin:10px 0 0;padding-left:1.3em;display:grid;gap:4px 24px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.outline li{font-size:.92rem;color:var(--muted)}
+.outline li a{color:var(--ink)}
+
+/* 히어로 */
+#s-hero{display:block;position:relative;border-top:0;padding:72px 0 80px}
+#s-hero::before{content:"";position:absolute;z-index:-1;top:0;bottom:0;left:50%;width:100vw;transform:translateX(-50%);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:56px 56px;-webkit-mask-image:linear-gradient(to bottom,#000 25%,transparent);mask-image:linear-gradient(to bottom,#000 25%,transparent)}
+#s-hero .sec-head{position:static;display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:28px}
+.hero-body{display:grid;gap:22px;justify-items:start}
+.hero-body h1{font-family:var(--display);font-size:clamp(2.9rem,10vw,6.2rem);font-weight:700;letter-spacing:-.04em;line-height:1}
+.hero-role{font-size:clamp(1.1rem,2.4vw,1.5rem);font-weight:500;color:var(--accent)}
+.hero-body .ph{font-size:1.2rem;max-width:40ch;padding:14px 18px;color:var(--text)}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+.hero-links{display:flex;gap:20px;flex-wrap:wrap;color:var(--muted)}
+.hero-links a{text-underline-offset:4px}
+
+/* 카드 그리드 */
+.grid{display:grid;gap:16px}
+.g-3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:grid;gap:10px;align-content:start;transition:border-color .2s}
+article.card:hover{border-color:var(--accent)}
+.card a{text-underline-offset:3px}
+
+/* 지난 3년 성과 리스트: 페이지의 핵심 요소 */
+.impact-year{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 24px;padding:26px 0;border-top:1px solid var(--line)}
+.impact-year:first-child{border-top:0;padding-top:4px}
+.impact-year h3{font-family:var(--display);font-size:2rem;font-weight:700;color:var(--muted);letter-spacing:-.03em;line-height:1.1}
+.impact-year ul{list-style:none;margin:0;padding:0;display:grid;gap:18px}
+.impact-year li{display:grid;grid-template-columns:minmax(130px,auto) minmax(0,1fr);gap:4px 24px;align-items:baseline}
+.impact-metric{font-family:var(--display);font-weight:700;font-size:1.6rem;letter-spacing:-.03em;color:var(--accent);line-height:1.2}
+@media (max-width:640px){.impact-year{grid-template-columns:1fr}.impact-year li{grid-template-columns:1fr}}
+
+/* 케이스 스터디 흐름 */
+.flow{margin:0;padding:0;list-style:none;counter-reset:step}
+.flow li{counter-increment:step;position:relative;padding:14px 0 14px 48px;border-bottom:1px solid var(--line);color:var(--muted)}
+.flow li:last-child{border-bottom:0}
+.flow li::before{content:counter(step);position:absolute;left:0;top:14px;width:28px;height:28px;border-radius:50%;background:var(--tint);color:var(--accent);font-family:var(--display);font-weight:700;font-size:.85rem;display:grid;place-items:center}
+.flow b{color:var(--ink)}
+
+/* 경력 타임라인 */
+.timeline{margin:0;padding:0 0 0 22px;list-style:none;border-left:1px solid var(--line);display:grid;gap:28px}
+.timeline li{position:relative;display:grid;gap:4px}
+.timeline li::before{content:"";position:absolute;left:-28px;top:7px;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+
+/* 고정 연락 버튼 */
+.sticky-cta{position:fixed;right:20px;bottom:0;z-index:60;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 20px)}
+.sticky-cta .btn{box-shadow:0 10px 28px rgba(0,0,0,.22)}
+
+footer{border-top:1px solid var(--line);padding:32px 0 120px}
+
+/* ===== Astra 스타일 적용: 전폭 섹션 밴드 + 섹션별 색상 톤 ===== */
+.wrap{max-width:1200px}
+body::before{background:#0f1a3a}
+
+/* 헤더: 히어로와 이어지는 다크 네이비 */
+.site-nav{--ink:#f5f7ff;--muted:#a3afd3;--line:rgba(255,255,255,.14);--accent:#8ff0df;--accent-ink:#06201c;background:rgba(15,26,58,.9);border-bottom-color:rgba(255,255,255,.1)}
+.site-nav .btn{color:var(--accent-ink)}
+
+/* 섹션 밴드: --hue 하나로 라이트/다크 팔레트를 파생 */
+.sec{
+  --hue:#64748b;
+  --bg:color-mix(in srgb,var(--hue) 11%,#fff);
+  --surface:color-mix(in srgb,var(--hue) 3%,#fff);
+  --line:color-mix(in srgb,var(--hue) 24%,#d3d8e0);
+  --ink:color-mix(in srgb,var(--hue) 22%,#080c14);
+  --text:color-mix(in srgb,var(--hue) 20%,#1e2531);
+  --muted:color-mix(in srgb,var(--hue) 25%,#3f485a);
+  --accent:color-mix(in srgb,var(--hue) 74%,#000);
+  --accent-ink:#fff;
+  --tint:color-mix(in srgb,var(--hue) 18%,#fff);
+  background:var(--bg);box-shadow:0 0 0 100vmax var(--bg);clip-path:inset(0 -100vmax);border-top:0;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .sec{
+    --bg:color-mix(in srgb,var(--hue) 16%,#0a0d14);
+    --surface:color-mix(in srgb,var(--hue) 24%,#0a0d14);
+    --line:color-mix(in srgb,var(--hue) 30%,#232b3a);
+    --ink:color-mix(in srgb,var(--hue) 10%,#f3f5f9);
+    --text:color-mix(in srgb,var(--hue) 12%,#d5dae4);
+    --muted:color-mix(in srgb,var(--hue) 25%,#9ba5b7);
+    --accent:color-mix(in srgb,var(--hue) 62%,#fff);
+    --accent-ink:#07101a;
+    --tint:color-mix(in srgb,var(--hue) 30%,#0a0d14);
+  }
+}
+:root[data-theme="dark"] .sec{
+  --bg:color-mix(in srgb,var(--hue) 16%,#0a0d14);
+  --surface:color-mix(in srgb,var(--hue) 24%,#0a0d14);
+  --line:color-mix(in srgb,var(--hue) 30%,#232b3a);
+  --ink:color-mix(in srgb,var(--hue) 10%,#f3f5f9);
+  --text:color-mix(in srgb,var(--hue) 12%,#d5dae4);
+  --muted:color-mix(in srgb,var(--hue) 25%,#9ba5b7);
+  --accent:color-mix(in srgb,var(--hue) 62%,#fff);
+  --accent-ink:#07101a;
+  --tint:color-mix(in srgb,var(--hue) 30%,#0a0d14);
+}
+
+/* 섹션별 톤 */
+#s-impact-snapshot{--hue:#0e8a80}
+#s-tech-stack{--hue:#6a4fe0}
+#s-featured-projects{--hue:#e0700f}
+#s-case-study-template{--hue:#2576c8}
+#s-experience-timeline{--hue:#c42a5a}
+
+/* 히어로(네이비)와 연락처(딥 틸)는 라이트/다크 모두 어두운 톤 고정 */
+#s-hero{--bg:#0f1a3a;--surface:#16244d;--line:rgba(255,255,255,.16);--ink:#f5f7ff;--text:#d5dcf2;--muted:#a3afd3;--accent:#8ff0df;--accent-ink:#06201c;--tint:#1c2f63;--grid:rgba(255,255,255,.07)}
+#s-contact{--bg:#0b2a2a;--surface:#123a39;--line:rgba(255,255,255,.16);--ink:#effcfa;--text:#cfeeea;--muted:#9cc7c1;--accent:#6ee7d7;--accent-ink:#04201d;--tint:#145049}
+
+/* 개발용 섹션 맵은 밴드 없이 */
+.sec.outline{background:transparent;box-shadow:none;clip-path:none;margin-bottom:32px}
+
+/* 푸터 */
+footer{--surface:#121a2c;--line:#263040;--muted:#98a3b5;background:#080c18;box-shadow:0 0 0 100vmax #080c18;clip-path:inset(0 -100vmax);border-top:0;color:var(--muted)}
+
+/* ===== 마무리: 접근성, 테마 토글, 개발용 요소 숨김 ===== */
+.skip-link{position:fixed;left:12px;top:-60px;z-index:100;background:var(--accent);color:var(--accent-ink);padding:10px 16px;border-radius:999px;text-decoration:none;font-weight:500;transition:top .15s}
+.skip-link:focus{top:calc(env(safe-area-inset-top,0px) + 10px)}
+.theme-toggle{width:36px;height:36px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);font-size:1.05rem;cursor:pointer;line-height:1}
+.theme-toggle:hover{border-color:var(--ink)}
+.theme-toggle[hidden]{display:none}
+.hero-avail{color:var(--muted);font-size:.95rem}
+body:not(.dev) #s-dev-outline,body:not(.dev) .tag,body:not(.dev) .sec>.note,body:not(.dev) .sec-head .note,body:not(.dev) #s-hero .sec-head{display:none}
+body:not(.dev) #s-hero{padding-top:56px}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
+
+<!-- ===== SECTION: s-site-nav (START) ===== -->
+<header class="site-nav" id="s-site-nav" data-section="site-nav" data-prd="F-07,F-08">
+  <div class="wrap">
+    <a class="logo" href="#s-hero" data-part="nav-logo">[이름]</a>
+    <nav aria-label="주요 메뉴">
+      <ul data-part="nav-links">
+        <li><a href="#s-featured-projects">프로젝트</a></li>
+        <li><a href="#s-experience-timeline">학력·활동</a></li>
+        <li><a href="#s-contact">연락처</a></li>
+        <li><button type="button" class="theme-toggle" data-part="nav-theme-toggle" aria-label="라이트/다크 테마 전환" aria-pressed="false" hidden>◐</button></li>
+        <li><a class="btn primary" href="#" data-part="nav-resume-btn" data-action="resume_download">이력서 받기</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+<!-- ===== SECTION: s-site-nav (END) ===== -->
+
+<main class="wrap" id="main">
+
+<!-- ===== SECTION: s-dev-outline (START) · 개발용, 배포 전 삭제 ===== -->
+<section class="sec outline" id="s-dev-outline" data-section="dev-outline">
+  <div class="sec-head">
+    <h2>섹션 맵</h2>
+    <span class="tag">#s-dev-outline</span>
+  </div>
+  <p class="note">수정 요청 시 아래 섹션 이름(id)으로 지정하세요. 예: “s-hero의 CTA 문구 변경”. 이 섹션은 개발용이며 배포 전 삭제합니다.</p>
+  <ol>
+    <li><a href="#s-site-nav">s-site-nav</a> · 상단 내비게이션</li>
+    <li><a href="#s-hero">s-hero</a> · 첫 화면 (0~5초)</li>
+    <li><a href="#s-impact-snapshot">s-impact-snapshot</a> · 지난 3년 핵심 성과 (5~15초)</li>
+    <li><a href="#s-tech-stack">s-tech-stack</a> · 기술 스택</li>
+    <li><a href="#s-featured-projects">s-featured-projects</a> · 대표 프로젝트 (15~30초)</li>
+    <li><a href="#s-case-study-template">s-case-study-template</a> · 케이스 스터디 구조</li>
+    <li><a href="#s-experience-timeline">s-experience-timeline</a> · 학력·활동 타임라인</li>
+    <li><a href="#s-contact">s-contact</a> · 연락처와 이력서</li>
+    <li><a href="#s-sticky-cta">s-sticky-cta</a> · 고정 연락 버튼</li>
+    <li><a href="#s-site-footer">s-site-footer</a> · 푸터</li>
+  </ol>
+</section>
+<!-- ===== SECTION: s-dev-outline (END) ===== -->
+
+<!-- ===== SECTION: s-hero (START) ===== -->
+<section class="sec" id="s-hero" data-section="hero" data-prd="F-01" data-priority="P0" aria-labelledby="hero-title">
+  <div class="sec-head">
+    <span class="meta"><span class="tag">#s-hero</span><span class="tag">F-01 · P0</span></span>
+    <span class="note">스크롤 없이 한 화면에 모두 노출</span>
+  </div>
+  <div class="hero-body">
+    <h1 id="hero-title" data-part="hero-name">[이름]</h1>
+    <p class="hero-role" data-part="hero-job-title">[신입 직무 타이틀: 예) 신입 백엔드 개발자]</p>
+    <p data-part="hero-value-proposition" class="ph">[한 줄 가치 제안, 80자 이내: 직무 + 배운 기술 + 대표 프로젝트 성과]</p>
+    <p class="hero-avail" data-part="hero-availability">입사 가능 시기: [YYYY-MM] · 근무 희망 지역: [지역]</p>
+    <div class="hero-actions" data-part="hero-cta">
+      <a class="btn primary" href="#" data-action="resume_download">이력서 보기</a>
+      <a class="btn ghost" href="#s-contact" data-action="contact_click">연락하기</a>
+    </div>
+    <div class="hero-links" data-part="hero-social">
+      <a href="#" data-action="github_click">GitHub</a>
+      <a href="#" data-action="linkedin_click">LinkedIn</a>
+    </div>
+  </div>
+</section>
+<!-- ===== SECTION: s-hero (END) ===== -->
+
+<!-- ===== SECTION: s-impact-snapshot (START) ===== -->
+<section class="sec" id="s-impact-snapshot" data-section="impact-snapshot" data-prd="F-02" data-priority="P0" aria-labelledby="impact-title">
+  <div class="sec-head">
+    <h2 id="impact-title">지난 3년간의 성과</h2>
+    <span class="meta"><span class="tag">#s-impact-snapshot</span><span class="tag">F-02 · P0</span></span>
+  </div>
+  <p class="note">최근 연도부터 연도별 2~3개. 항목마다 [행동 + 대상 + 방법 + 수치] 형식으로 쓰고, 근거 링크를 연결합니다.</p>
+  <div data-part="impact-list">
+    <div class="impact-year" data-part="impact-year-2026">
+      <h3>2026</h3>
+      <ul>
+        <li data-part="impact-2026-1"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2026-2"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2026-3"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+      </ul>
+    </div>
+    <div class="impact-year" data-part="impact-year-2025">
+      <h3>2025</h3>
+      <ul>
+        <li data-part="impact-2025-1"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2025-2"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2025-3"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+      </ul>
+    </div>
+    <div class="impact-year" data-part="impact-year-2024">
+      <h3>2024</h3>
+      <ul>
+        <li data-part="impact-2024-1"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2024-2"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+        <li data-part="impact-2024-3"><span class="impact-metric">[수치]</span><span>[프로젝트·교육·수상 + 행동 + 방법 → 결과] <a href="#s-featured-projects">근거</a></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- ===== SECTION: s-impact-snapshot (END) ===== -->
+
+<!-- ===== SECTION: s-tech-stack (START) ===== -->
+<section class="sec" id="s-tech-stack" data-section="tech-stack" data-prd="F-03" data-priority="P0" aria-labelledby="stack-title">
+  <div class="sec-head">
+    <h2 id="stack-title">기술 스택</h2>
+    <span class="meta"><span class="tag">#s-tech-stack</span><span class="tag">F-03 · P0</span></span>
+  </div>
+  <p class="note">숙련도 단계별 3그룹. 지원 직무와 관련된 항목만 표시합니다.</p>
+  <div class="grid g-3">
+    <div class="card" data-part="stack-primary"><h3>주력</h3><p class="ph">[기술 태그 · 최대 6개]</p></div>
+    <div class="card" data-part="stack-experienced"><h3>사용 경험</h3><p class="ph">[기술 태그]</p></div>
+    <div class="card" data-part="stack-learning"><h3>학습 중</h3><p class="ph">[기술 태그]</p></div>
+  </div>
+</section>
+<!-- ===== SECTION: s-tech-stack (END) ===== -->
+
+<!-- ===== SECTION: s-featured-projects (START) ===== -->
+<section class="sec" id="s-featured-projects" data-section="featured-projects" data-prd="F-04" data-priority="P0" aria-labelledby="projects-title">
+  <div class="sec-head">
+    <h2 id="projects-title">대표 프로젝트</h2>
+    <span class="meta"><span class="tag">#s-featured-projects</span><span class="tag">F-04 · P0</span></span>
+  </div>
+  <p class="note">3~4개 카드. 카드마다 요약 1줄, 역할, 스택 5개 이하, 성과 수치 1개 이상, 데모 또는 GitHub 링크.</p>
+  <div class="grid g-3" data-part="project-cards">
+    <article class="card" data-part="project-card-1">
+      <h3>[프로젝트명 1]</h3>
+      <p class="ph">[한 줄 요약]</p>
+      <p class="note">내 기여: [팀/개인 · 내가 구현한 부분] · 스택: [태그 5개 이하]</p>
+      <p><b>[성과 수치]</b></p>
+      <p><a href="#s-case-study-template">케이스 스터디</a> · <a href="#" data-action="demo_click">데모</a> · <a href="#" data-action="github_click">GitHub</a></p>
+    </article>
+    <article class="card" data-part="project-card-2">
+      <h3>[프로젝트명 2]</h3>
+      <p class="ph">[한 줄 요약]</p>
+      <p class="note">내 기여: [팀/개인 · 내가 구현한 부분] · 스택: [태그 5개 이하]</p>
+      <p><b>[성과 수치]</b></p>
+      <p><a href="#s-case-study-template">케이스 스터디</a> · <a href="#" data-action="demo_click">데모</a> · <a href="#" data-action="github_click">GitHub</a></p>
+    </article>
+    <article class="card" data-part="project-card-3">
+      <h3>[프로젝트명 3]</h3>
+      <p class="ph">[한 줄 요약]</p>
+      <p class="note">내 기여: [팀/개인 · 내가 구현한 부분] · 스택: [태그 5개 이하]</p>
+      <p><b>[성과 수치]</b></p>
+      <p><a href="#s-case-study-template">케이스 스터디</a> · <a href="#" data-action="demo_click">데모</a> · <a href="#" data-action="github_click">GitHub</a></p>
+    </article>
+  </div>
+</section>
+<!-- ===== SECTION: s-featured-projects (END) ===== -->
+
+<!-- ===== SECTION: s-case-study-template (START) ===== -->
+<section class="sec" id="s-case-study-template" data-section="case-study-template" data-prd="F-05" data-priority="P0" aria-labelledby="case-title">
+  <div class="sec-head">
+    <h2 id="case-title">케이스 스터디 페이지 구조</h2>
+    <span class="meta"><span class="tag">#s-case-study-template</span><span class="tag">F-05 · P0</span></span>
+  </div>
+  <p class="note">실제 서비스에서는 별도 페이지(/projects/[slug])입니다. 여기서는 구성 순서만 보여 줍니다.</p>
+  <ol class="flow" data-part="case-study-flow">
+    <li data-part="case-header"><b>제목과 요약</b> · 역할, 기간, 팀 규모</li>
+    <li data-part="case-results"><b>결과 요약</b> · 수치 카드</li>
+    <li data-part="case-problem"><b>문제 정의</b></li>
+    <li data-part="case-approach"><b>접근 방식</b> · 핵심 기술 결정과 트레이드오프</li>
+    <li data-part="case-architecture"><b>아키텍처 다이어그램</b> · 빌드 시 SVG로 변환</li>
+    <li data-part="case-retrospective"><b>결과와 회고</b></li>
+    <li data-part="case-links"><b>링크</b> · 라이브 데모, GitHub, 다음 프로젝트</li>
+  </ol>
+</section>
+<!-- ===== SECTION: s-case-study-template (END) ===== -->
+
+<!-- ===== SECTION: s-experience-timeline (START) ===== -->
+<section class="sec" id="s-experience-timeline" data-section="experience-timeline" data-prd="F-06" data-priority="P0" aria-labelledby="exp-title">
+  <div class="sec-head">
+    <h2 id="exp-title">학력·교육·활동</h2>
+    <span class="meta"><span class="tag">#s-experience-timeline</span><span class="tag">F-06 · P0</span></span>
+  </div>
+  <p class="note">학력, 교육 과정, 인턴십, 수상·대외활동을 최신순으로. 항목당 배운 점과 결과 1~2줄.</p>
+  <ul class="timeline" data-part="timeline-items">
+    <li data-part="timeline-item-1"><h3>[학교] · [전공]</h3><p class="note">[입학 ~ 졸업(예정)]</p><p class="ph">[핵심 이수 과목, 학점, 졸업 프로젝트]</p></li>
+    <li data-part="timeline-item-2"><h3>[교육 과정/인턴십] · [과정명]</h3><p class="note">[기간]</p><p class="ph">[배운 기술과 결과물 1~2줄]</p></li>
+    <li data-part="timeline-item-3"><h3>[수상·대외활동] · [활동명]</h3><p class="note">[기간]</p><p class="ph">[역할과 결과 1~2줄]</p></li>
+  </ul>
+</section>
+<!-- ===== SECTION: s-experience-timeline (END) ===== -->
+
+<!-- ===== SECTION: s-contact (START) ===== -->
+<section class="sec" id="s-contact" data-section="contact" data-prd="F-07,F-08" data-priority="P0" aria-labelledby="contact-title">
+  <div class="sec-head">
+    <h2 id="contact-title">연락처</h2>
+    <span class="meta"><span class="tag">#s-contact</span><span class="tag">F-07 · F-08 · P0</span></span>
+  </div>
+  <p class="note">이메일 복사 버튼, 외부 프로필 링크, 이력서 다운로드를 한곳에 모읍니다.</p>
+  <div class="hero-actions" data-part="contact-actions">
+    <a class="btn primary" href="#" data-action="email_copy" data-email="your@email.com" aria-live="polite">이메일 복사</a>
+    <a class="btn ghost" href="#" data-action="resume_download">이력서 받기</a>
+    <a class="btn ghost" href="#" data-action="github_click">GitHub</a>
+    <a class="btn ghost" href="#" data-action="linkedin_click">LinkedIn</a>
+  </div>
+</section>
+<!-- ===== SECTION: s-contact (END) ===== -->
+
+</main>
+
+<!-- ===== SECTION: s-sticky-cta (START) ===== -->
+<div class="sticky-cta" id="s-sticky-cta" data-section="sticky-cta" data-prd="F-08">
+  <a class="btn primary" href="#s-contact" data-action="contact_click">연락하기</a>
+</div>
+<!-- ===== SECTION: s-sticky-cta (END) ===== -->
+
+<!-- ===== SECTION: s-site-footer (START) ===== -->
+<footer id="s-site-footer" data-section="site-footer">
+  <div class="wrap">
+    <p class="note" data-part="footer-updated">최종 업데이트 [YYYY-MM-DD] · <span class="tag">#s-site-footer</span></p>
+  </div>
+</footer>
+<!-- ===== SECTION: s-site-footer (END) ===== -->
+
+<script>
+(function(){
+  var d=document,r=d.documentElement;
+  if(new URLSearchParams(location.search).has("dev"))d.body.classList.add("dev");
+  function track(n,props){try{(window.__events=window.__events||[]).push({n:n,props:props,t:Date.now()});if(window.plausible)window.plausible(n,{props:props})}catch(e){}}
+  var tg=d.querySelector('[data-part="nav-theme-toggle"]');
+  if(tg){
+    tg.hidden=false;
+    var cur=function(){return r.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")};
+    tg.setAttribute("aria-pressed",cur()==="dark");
+    tg.addEventListener("click",function(){var n=cur()==="dark"?"light":"dark";r.dataset.theme=n;tg.setAttribute("aria-pressed",n==="dark");try{localStorage.setItem("theme",n)}catch(e){}});
+  }
+  function copy(t,ok){
+    function fb(){var x=d.createElement("textarea");x.value=t;x.style.cssText="position:fixed;opacity:0";d.body.appendChild(x);x.select();try{d.execCommand("copy");ok()}catch(e){}d.body.removeChild(x)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,fb)}else{fb()}
+  }
+  d.addEventListener("click",function(e){
+    if(e.target.closest('a[href="#"]'))e.preventDefault();
+    var a=e.target.closest("[data-action]");if(!a)return;
+    var card=a.closest('[data-part^="project-card"]'),act=a.dataset.action;
+    track(act,card?{project:card.dataset.part}:undefined);
+    if(act==="email_copy"){
+      var label=a.dataset.label||(a.dataset.label=a.textContent);
+      copy(a.dataset.email||"",function(){a.textContent="복사되었습니다";setTimeout(function(){a.textContent=label},1800)});
+    }
+  });
+  var fired={};
+  addEventListener("scroll",function(){
+    var h=r.scrollHeight-innerHeight;if(h<=0)return;
+    var pct=scrollY/h*100;
+    [25,50,75,100].forEach(function(m){if(pct>=m-0.5&&!fired[m]){fired[m]=1;track("scroll_depth",{percent:m})}});
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
