@@ -5,3 +5,7 @@
 ## 할 일 관리 앱(자동분류 기능 추가) 결과 화면
 
 <img width="762" height="832" alt="1" src="https://github.com/user-attachments/assets/d3249233-7204-4582-90f9-65119c2da026" />
+
+## 할 일 관리 앱(UI 개선) 결과 화면
+
+<img width="1861" height="747" alt="1" src="https://github.com/user-attachments/assets/ce6b9b27-3631-4e9b-9105-50ce16858f9e" />
