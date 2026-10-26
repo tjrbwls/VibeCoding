@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>상식 퀴즈 게임</title>
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--tx:#1d1d1b;--mu:#6b6a64;--ac:#2f5bea;--ok:#1a8a4a;--okb:#e1f4e8;--no:#c63a2f;--nob:#fbe4e1;--bd:#e0ded7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#16161a;--card:#202026;--tx:#f0efea;--mu:#9c9a92;--ac:#7b9bff;--ok:#5cd08a;--okb:#16301f;--no:#ff7b6e;--nob:#3a1d1a;--bd:#33333b}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#16161a;--card:#202026;--tx:#f0efea;--mu:#9c9a92;--ac:#7b9bff;--ok:#5cd08a;--okb:#16301f;--no:#ff7b6e;--nob:#3a1d1a;--bd:#33333b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:-apple-system,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;line-height:1.5}
+#app{max-width:520px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:26px;margin:12px 0 4px}h2{font-size:19px;margin:0 0 12px}
+.mu{color:var(--mu);font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:12px 0}
+button{font:inherit;color:inherit;cursor:pointer}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;border:1px solid var(--bd);background:var(--card);text-align:left;margin:8px 0;font-size:16px}
+.btn:hover:not(:disabled){border-color:var(--ac)}
+.pri{background:var(--ac);color:#fff;border-color:var(--ac);text-align:center;font-weight:600}
+.row{display:flex;gap:8px}.row .btn{text-align:center}
+.ok{background:var(--okb);border-color:var(--ok)}.no{background:var(--nob);border-color:var(--no)}
+input{font:inherit;width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.bar{height:8px;background:var(--bd);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--ac)}
+.top{display:flex;justify-content:space-between;font-size:14px;color:var(--mu);margin-bottom:6px}
+.q{font-size:20px;font-weight:600;margin:16px 0}
+.big{font-size:52px;font-weight:700;text-align:center;margin:4px 0}
+table{width:100%;border-collapse:collapse;font-size:15px}td,th{padding:8px 4px;border-bottom:1px solid var(--bd);text-align:left}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}.tabs button{padding:6px 12px;border-radius:20px;border:1px solid var(--bd);background:var(--card);font-size:14px}.tabs .on{background:var(--ac);color:#fff;border-color:var(--ac)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var CATS={h:"한국사",s:"과학",g:"지리",c:"일반상식"};
+// [문제, 정답, 오답1, 오답2, 오답3, 해설]
+var Q={
+h:[
+["훈민정음을 창제한 조선의 왕은?","세종","태종","세조","성종","세종대왕은 1443년 훈민정음을 창제하고 1446년 반포했습니다."],
+["고려를 건국한 인물은?","왕건","궁예","견훤","이성계","왕건은 918년 고려를 세웠습니다."],
+["임진왜란 때 거북선을 앞세워 한산도대첩을 이끈 조선 수군 장수는?","이순신","권율","김시민","곽재우","이순신은 한산도대첩 등에서 수군을 승리로 이끌었습니다."],
+["3·1 운동이 일어난 해는?","1919년","1910년","1923년","1945년","1919년 3월 1일 전국에서 독립 만세 운동이 일어났습니다."],
+["조선이 건국된 해는?","1392년","1231년","1446년","1592년","이성계가 1392년 조선을 건국했습니다."],
+["발해를 건국한 인물은?","대조영","연개소문","김춘추","장보고","대조영은 698년 발해를 세웠습니다(『신당서』 등 주류 사료 기준)."],
+["광개토대왕이 다스린 나라는?","고구려","백제","신라","가야","광개토대왕은 고구려의 제19대 왕입니다."],
+["6·25 전쟁이 발발한 해는?","1950년","1945년","1948년","1953년","1950년 6월 25일에 발발해 1953년 정전 협정이 체결됐습니다."],
+["대한민국이 일제로부터 광복을 맞은 해는?","1945년","1919년","1948년","1950년","1945년 8월 15일 광복을 맞았습니다."],
+["팔만대장경판이 현재 보관되어 있는 사찰은?","해인사","불국사","통도사","송광사","팔만대장경판은 합천 해인사 장경판전에 보관되어 있습니다."]],
+s:[
+["물의 화학식은?","H₂O","CO₂","O₂","NaCl","물은 수소 원자 2개와 산소 원자 1개로 이루어집니다."],
+["태양계 8개 행성 중 지름과 질량이 가장 큰 행성은?","목성","토성","지구","해왕성","목성은 태양계 행성 중 질량과 크기가 가장 큽니다."],
+["진공에서 빛의 속도는 초당 약 얼마인가?","30만 km","3만 km","300만 km","3억 km","진공에서 빛은 초당 약 299,792km를 갑니다."],
+["사람 몸에서 면적과 무게 기준으로 가장 큰 장기는?","피부","간","폐","뇌","피부는 몸 전체를 덮는 가장 큰 장기입니다. (몸속 장기만 따지면 간이 가장 큽니다.)"],
+["식물이 광합성을 위해 흡수하는 기체는?","이산화탄소","산소","질소","수소","식물은 이산화탄소와 물, 빛으로 포도당과 산소를 만듭니다."],
+["원소 기호 Au가 나타내는 원소는?","금","은","구리","알루미늄","Au는 라틴어 aurum에서 온 금의 원소 기호입니다."],
+["태양을 포함해, 지구에서 거리가 가장 가까운 별(항성)은?","태양","시리우스","북극성","프록시마 센타우리","태양은 지구에서 가장 가까운 항성입니다."],
+["상온·상압에서 소리가 일반적으로 가장 빠르게 전달되는 물질의 상태는?","고체","액체","기체","진공","소리는 입자 사이가 촘촘한 고체에서 가장 빠르고, 진공에서는 전달되지 않습니다."],
+["건강한 성인의 일반적인 평균 체온은 약 몇 ℃인가?","36.5℃","34℃","38.5℃","40℃","건강한 성인의 평균 체온은 약 36.5℃입니다. 측정 부위·시간대·개인에 따라 약 36~37.5℃ 범위에서 차이가 납니다."],
+["근대 물리학에서 만유인력의 법칙을 수학적으로 체계화한 과학자는?","뉴턴","아인슈타인","갈릴레이","다윈","뉴턴은 1687년 『프린키피아』에서 만유인력의 법칙을 발표했습니다."]],
+g:[
+["대한민국(남한) 영토에서 해발 고도가 가장 높은 산은?","한라산","지리산","설악산","백두산","한라산(1,947m)은 대한민국 영토에서 가장 높은 산입니다. (백두산은 북한·중국 접경에 있습니다.)"],
+["한반도에서 길이 기준으로 가장 긴 강은?","압록강","한강","낙동강","대동강","압록강은 길이 약 790km로 한반도에서 가장 깁니다. (남한 안에서는 낙동강이 가장 긴 강으로 알려져 있습니다.)"],
+["대한민국에서 면적 기준으로 가장 큰 섬은?","제주도","거제도","강화도","울릉도","제주도는 면적 약 1,850㎢로 가장 큰 섬입니다."],
+["7대륙 중 면적이 가장 큰 대륙은?","아시아","아프리카","북아메리카","유럽","아시아는 면적과 인구 모두 세계 최대입니다."],
+["호주의 수도는?","캔버라","시드니","멜버른","퍼스","시드니와 멜버른의 타협으로 내륙의 캔버라가 수도가 되었습니다."],
+["영토 총면적 기준으로 세계에서 가장 넓은 나라는?","러시아","캐나다","중국","미국","러시아는 약 1,710만 ㎢로 세계에서 가장 넓습니다."],
+["캐나다의 수도는?","오타와","토론토","밴쿠버","몬트리올","캐나다의 수도는 오타와입니다."],
+["아마존강의 본류와 대부분의 유역이 위치한 대륙은?","남아메리카","아프리카","아시아","북아메리카","아마존강은 남아메리카 북부를 가로질러 대서양으로 흐릅니다."],
+["세계에서 면적이 가장 큰 열대·아열대(고온) 사막은? (극지 사막 제외)","사하라 사막","고비 사막","아라비아 사막","칼라하리 사막","사하라 사막은 북아프리카에 있으며 면적이 약 900만 ㎢입니다."],
+["현재 대한민국 행정구역상 독도가 속한 도(道)는?","경상북도","강원특별자치도","경상남도","전라남도","독도는 경상북도 울릉군에 속합니다."]],
+c:[
+["대한민국의 한글날은 몇 월 며칠인가?","10월 9일","10월 3일","5월 5일","8월 15일","한글날은 훈민정음 반포를 기념하는 10월 9일입니다."],
+["윤년에 2월은 며칠까지 있는가?","29일","28일","30일","31일","윤년에는 2월이 29일까지 있습니다."],
+["‘모나리자’를 그린 화가는?","레오나르도 다 빈치","미켈란젤로","라파엘로","피카소","모나리자는 레오나르도 다 빈치가 16세기 초에 그린 작품입니다."],
+["FIFA 남자 월드컵 본선은 정규 몇 년 주기로 열리는가?","4년","2년","3년","5년","월드컵은 4년 주기로 개최됩니다."],
+["노벨 평화상 시상식이 열리는 도시는?","오슬로","스톡홀름","제네바","헤이그","평화상만 노르웨이 오슬로에서, 나머지 부문은 스톡홀름에서 시상합니다."],
+["유엔(UN) 본부가 있는 도시는?","뉴욕","제네바","파리","런던","유엔 본부는 미국 뉴욕에 있습니다."],
+["현재 한·중·일 공식 대국에서 쓰는 표준 바둑판의 가로·세로 줄 수는?","19줄","15줄","17줄","21줄","표준 바둑판은 19줄 × 19줄입니다."],
+["한국 교과서(뉴턴의 분류) 기준으로 무지개는 몇 가지 색으로 표현하는가?","7가지","5가지","6가지","8가지","빨주노초파남보 7가지로 표현합니다. (문화권마다 5~6색으로 보기도 하며, 실제 빛은 연속 스펙트럼입니다.)"],
+["현대 표준 피아노(업라이트·그랜드)의 건반 수는?","88개","76개","66개","100개","표준 피아노는 흰 건반 52개와 검은 건반 36개, 총 88개입니다."],
+["올림픽 오륜기에 있는 고리의 수는?","5개","4개","6개","7개","오륜기의 5개 고리는 5개 대륙의 결합을 상징합니다."]]
+};
+var app=document.getElementById("app"),S={},tm=null;
+// 문제별 난이도 (e=쉬움, m=보통, h=어려움) — Q 배열 순서와 동일
+var DF={h:"eeemmmemeh",s:"eemmemmhme",g:"emeemememh",c:"eeeehmmmhm"},DN={e:"쉬움",m:"보통",h:"어려움"};
+var ScoreManager={base:10,mult:{e:1,m:1.5,h:2},combo:{3:2,5:5,10:10},
+  calc:function(d,sec,hint,st){var b=Math.round(this.base*this.mult[d]),t=sec<10?3:0,h=hint?0:2,c=this.combo[st]||0;return{b:b,t:t,h:h,c:c,tot:b+t+h+c}}};
+function ld(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function home(){
+  clearInterval(tm);var n=ld("qz_nick",""),dn=getHist().filter(function(r){return r.k==="daily"&&inP(r,"day")}).sort(cmp)[0],md=(new Date().getMonth()+1)+"월 "+new Date().getDate()+"일",dtxt=dn?"✅ 오늘 완료 ("+dn.s+"점) · 다시 도전":"오늘의 퀴즈 시작";
+  var h='<h1>상식 퀴즈 게임</h1><p class="mu">4지선다 · 한국사 / 과학 / 지리 / 일반상식</p>'+
+  '<div class="card"><label class="mu">닉네임</label><input id="nick" maxlength="8" placeholder="닉네임 (최대 8자)" value="'+esc(n)+'"></div>'+
+  '<h2>오늘의 퀴즈 <span class="mu">('+md+' · 매일 새로 구성 · 10문제)</span></h2><button class="btn pri" onclick="start(\'daily\',\'daily\')">'+dtxt+'</button>'+
+  '<h2 style="margin-top:20px">카테고리 도전 <span class="mu">(10문제)</span></h2>';
+  for(var k in CATS)h+='<button class="btn" onclick="start(\'cat\',\''+k+'\')">'+CATS[k]+'<span class="mu" style="float:right">최고 '+best(k)+'점</span></button>';
+  h+='<h2 style="margin-top:20px">전체 도전 <span class="mu">(40문제)</span></h2><button class="btn pri" onclick="start(\'all\',\'all\')">전체 40문제 시작 · 최고 '+best('all')+'점</button>'+
+  '<h2 style="margin-top:20px">스피드 퀴즈 <span class="mu">(20문제 · 문제당 15초)</span></h2><button class="btn pri" onclick="start(\'speed\',\'speed\')">스피드 20문제 시작 · 최고 '+best('speed')+'점</button>'+
+  '<p class="mu" style="margin-top:16px">점수: 기본 10점 × 난이도(쉬움 1배 · 보통 1.5배 · 어려움 2배) + 10초 미만 답변 +3 + 힌트 미사용 +2 + 연속 정답 콤보(3연속 +2 · 5연속 +5 · 10연속 +10)</p>'+
+  '<button class="btn" style="text-align:center" onclick="rank(\'all\')">순위표 보기</button>'+
+  '<button class="btn" style="text-align:center" onclick="stats()">내 통계 · 최근 기록</button>';
+  app.innerHTML=h;
+}
+function best(k){var l=getLb()[k];return l&&l.length?l[0].s:0}
+function start(mode,k){
+  var nick=(document.getElementById("nick").value||"").trim();
+  if(!nick){document.getElementById("nick").focus();document.getElementById("nick").placeholder="닉네임을 입력해 주세요";return}
+  sv("qz_nick",nick);
+  var keys=mode==="cat"?[k]:Object.keys(CATS),list=[];
+  keys.forEach(function(c){shuf(Q[c].map(function(q,x){return{q:q,d:DF[c].charAt(x)}})).forEach(function(o){var q=o.q;
+    list.push({c:c,d:o.d,q:q[0],ex:q[5],ch:shuf([{t:q[1],ok:1},{t:q[2]},{t:q[3]},{t:q[4]}])})})});
+  if(mode==="speed")list=shuf(list).slice(0,20);
+  if(mode==="daily")list=daily();
+  S={nick:nick,mode:mode,key:k,list:list,i:0,sc:0,cr:0,t0:Date.now(),pc:{h:0,s:0,g:0,c:0},wr:[],lock:0,st:0,ms:0,bd:{b:0,t:0,h:0,c:0},lim:mode==="speed"?15:20};
+  show();
+}
+function show(){
+  clearInterval(tm);var q=S.list[S.i],n=S.list.length;S.lock=0;S.left=S.lim;S.hint=0;S.qt=Date.now();
+  var h='<div class="top"><span>'+CATS[q.c]+' · '+DN[q.d]+' · '+(S.i+1)+' / '+n+'</span><span>점수 '+S.sc+' · 🔥'+S.st+' · <b id="tl">'+S.lim+'</b>초</span></div>'+
+  '<div class="bar"><i style="width:'+(S.i/n*100)+'%"></i></div><div class="q">'+esc(q.q)+'</div>';
+  q.ch.forEach(function(c,j){h+='<button class="btn" id="c'+j+'" onclick="pick('+j+')">'+(j+1)+'. '+esc(c.t)+'</button>'});
+  h+='<button class="btn" id="hb" style="text-align:center" onclick="hint()">💡 힌트 (오답 2개 제거 · 힌트 보너스 +2 포기)</button><div id="fb"></div>';app.innerHTML=h;
+  tm=setInterval(function(){S.left--;var e=document.getElementById("tl");if(e)e.textContent=S.left;if(S.left<=0)pick(-1)},1000);
+}
+function hint(){
+  if(S.lock||S.hint)return;S.hint=1;var q=S.list[S.i],w=[];
+  q.ch.forEach(function(c,x){if(!c.ok)w.push(x)});
+  shuf(w).slice(0,2).forEach(function(x){var b=document.getElementById("c"+x);b.disabled=true;b.style.opacity=".35"});
+  document.getElementById("hb").style.display="none";
+}
+function pick(j){
+  if(S.lock)return;S.lock=1;clearInterval(tm);var q=S.list[S.i],ok=j>=0&&q.ch[j].ok;
+  q.ch.forEach(function(c,x){var b=document.getElementById("c"+x);b.disabled=true;if(c.ok)b.classList.add("ok");else if(x===j)b.classList.add("no")});
+  var r=null;document.getElementById("hb").style.display="none";
+  if(ok){S.st++;S.ms=Math.max(S.ms,S.st);r=ScoreManager.calc(q.d,(Date.now()-S.qt)/1000,S.hint,S.st);S.sc+=r.tot;S.cr++;S.pc[q.c]++;["b","t","h","c"].forEach(function(x){S.bd[x]+=r[x]})}
+  else{S.st=0;S.wr.push({q:q.q,a:q.ch.filter(function(c){return c.ok})[0].t,m:j>=0?q.ch[j].t:"시간 초과"})}
+  var last=S.i===S.list.length-1;
+  document.getElementById("fb").innerHTML='<div class="card '+(ok?'ok':'no')+'"><b>'+(j<0?"⏰ 시간 초과":ok?"⭕ 정답입니다!":"❌ 오답입니다")+'</b>'+(r?' <b>+'+r.tot+'점</b><br><span class="mu">기본 '+r.b+(r.t?' · 시간 +'+r.t:'')+(r.h?' · 힌트 미사용 +'+r.h:'')+(r.c?' · 콤보 +'+r.c+' ('+S.st+'연속)':'')+'</span>':'')+'<p style="margin:6px 0 0">'+esc(q.ex)+'</p></div><button class="btn pri" onclick="next()">'+(last?"결과 보기":"다음 문제")+'</button>';
+}
+function next(){S.i++;S.i>=S.list.length?finish():show()}
+function finish(){
+  var dur=Math.round((Date.now()-S.t0)/1000),rec={n:S.nick,k:S.key,s:S.sc,c:S.cr,d:dur,at:Date.now(),m:S.mode,ms:S.ms,t:S.list.length};
+  saveGame(rec);
+  var f=function(r){return r.at===rec.at},pos=getLb()[S.key].findIndex(f),wk=sorted(getHist(),S.key,"week").findIndex(f)+1,dy=sorted(getHist(),S.key,"day").findIndex(f)+1;
+  var tot=S.list.length,h='<h1>결과</h1><div class="card"><div class="mu" style="text-align:center">'+esc(S.nick)+' 님의 점수</div><div class="big">'+S.sc+'점</div>'+
+  '<p style="text-align:center;margin:0">정답 '+S.cr+' / '+tot+' · 소요 '+dur+'초 · <b>전체 '+(pos>=0?(pos+1)+'위':'100위권 밖')+'</b></p><p class="mu" style="text-align:center;margin:4px 0 0">주간 '+(wk||'-')+'위 · 일일 '+(dy||'-')+'위 · 기록이 자동 저장되었습니다</p></div>';
+  h+='<div class="card"><h2>점수 내역</h2><table><tr><td>기본 점수(난이도 반영)</td><td>'+S.bd.b+'</td></tr><tr><td>시간 보너스</td><td>'+S.bd.t+'</td></tr><tr><td>힌트 미사용 보너스</td><td>'+S.bd.h+'</td></tr><tr><td>콤보 보너스</td><td>'+S.bd.c+'</td></tr><tr><td>최대 연속 정답</td><td>'+S.ms+'</td></tr></table></div>';
+  if(S.mode==="all"){h+='<div class="card"><h2>카테고리별 정답</h2>';for(var k in CATS)h+='<div class="top"><span>'+CATS[k]+'</span><span>'+S.pc[k]+' / 10</span></div><div class="bar" style="margin-bottom:10px"><i style="width:'+S.pc[k]*10+'%"></i></div>';h+='</div>'}
+  if(S.wr.length){h+='<div class="card"><h2>틀린 문제 복습</h2>';S.wr.forEach(function(w){h+='<p style="margin:0 0 12px"><b>'+esc(w.q)+'</b><br><span class="mu">내 답: '+esc(w.m)+'</span><br>정답: '+esc(w.a)+'</p>'});h+='</div>'}
+  h+='<div class="row"><button class="btn pri" onclick="again()">다시 하기</button><button class="btn" onclick="rank(\''+S.key+'\')">순위표</button><button class="btn" onclick="home()">홈</button></div>';
+  app.innerHTML=h;window.scrollTo(0,0);
+}
+function again(){var m=S.mode,k=S.key;home();start(m,k)}
+// 오늘의 퀴즈 전용 추가 문제풀 (일반 모드에는 사용하지 않음)
+var QX={
+h:[
+["경복궁이 처음 완공된 1395년 당시 조선의 왕은?","태조","태종","세종","정종","경복궁은 1395년 태조 때 창건되었습니다."],
+["612년 살수대첩에서 수나라 군대를 크게 물리친 고구려 장수는?","을지문덕","연개소문","양만춘","강감찬","을지문덕은 살수대첩을 이끈 고구려의 장군입니다."],
+["1019년 귀주대첩에서 거란군을 물리친 고려의 장수는?","강감찬","서희","윤관","최영","강감찬은 귀주대첩(1019)의 승리를 이끌었습니다."],
+["1610년 편찬을 마친 조선의 의학서 『동의보감』을 집필한 의관은?","허준","이제마","정약용","유성룡","허준이 『동의보감』을 완성했습니다."],
+["1919년 대한민국 임시정부가 처음 수립된 도시는?","상하이","충칭","항저우","난징","임시정부는 1919년 4월 상하이에서 수립되었습니다."]],
+s:[
+["건조 공기(부피 기준)에서 지구 대기의 가장 많은 기체는?","질소","산소","아르곤","이산화탄소","질소가 약 78%로 가장 많습니다."],
+["주기율표에서 원자 번호 1번인 원소는?","수소","헬륨","산소","탄소","원자 번호 1번은 수소입니다."],
+["사람의 혈액에서 산소 운반을 주로 담당하는 세포는?","적혈구","백혈구","혈소판","림프구","적혈구의 헤모글로빈이 산소를 운반합니다."],
+["달이 지구를 한 바퀴 공전하는 데 걸리는 시간(항성월)은 약 얼마인가?","약 27일","약 7일","약 14일","약 365일","항성월은 약 27.3일입니다. (보름달로 돌아오는 무호월은 약 29.5일)"],
+["1기압에서 순수한 물이 끓는 온도는? (섭씨 기준)","100℃","90℃","110℃","120℃","1기압에서 물의 끓는점은 100℃입니다."]],
+g:[
+["에베레스트산이 속해 있는 산맥은?","히말라야 산맥","알프스 산맥","안데스 산맥","로키 산맥","에베레스트산은 히말라야 산맥에 있습니다."],
+["다음 중 서해와 접해 있는 대한민국의 광역시는? (7개 광역시 기준)","인천","부산","울산","대구","부산·울산은 남해·동해에, 대구·광주·대전은 내륙에 있습니다."],
+["유럽 중남부에 위치하며 몽블랑이 속한 산맥은?","알프스 산맥","피레네 산맥","우랄 산맥","카르파티아 산맥","몽블랑은 알프스 산맥에 있습니다."],
+["나일강이 최종적으로 흘러드는 바다는?","지중해","홍해","대서양","흑해","나일강은 이집트 남쪽에서 북으로 흘러 지중해에 이릅니다."],
+["다음 중 바다에 접해 있지 않은 내륙국은?","몽골","베트남","태국","필리핀","몽골은 바다에 접하지 않은 내륙국입니다."]],
+c:[
+["태극기의 4궘 중 하늘을 상징하는 궘는?","건","곤","감","리","건은 하늘, 곤은 땅, 감은 물, 리는 불을 상징합니다."],
+["1시간은 몇 초인가?","3,600초","360초","1,200초","6,000초","1시간 = 60분 = 3,600초입니다."],
+["1896년 근대 올림픽 제1회 대회가 열린 도시는?","아테네","파리","런던","로마","제1회 근대 올림픽은 1896년 아테네에서 열렸습니다."],
+["체스에서 한 편이 시작할 때 가지는 기물의 개수는?","16개","12개","20개","32개","한 편은 기물 8개와 폰 8개, 총 16개로 시작합니다."],
+["영어 알파벳은 모두 몇 글자인가?","26글자","24글자","28글자","30글자","현대 영어 알파벳은 26자입니다."]]
+},DX={h:"meeem",s:"meeme",g:"emmmh",c:"hemme"};
+function rng(s){return function(){s|=0;s=s+0x6D2B79F5|0;var t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function today(){var d=new Date();return d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate()}
+function sshuf(a,r){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(r()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+// 날짜를 시드로 쓰는 일일 문제 구성: 같은 날짜에는 모든 사용자에게 같은 10문제
+function daily(){
+  var r=rng(today()),pool=[];
+  for(var c in CATS)Q[c].concat(QX[c]).forEach(function(q,x){pool.push({c:c,q:q,d:(DF[c]+DX[c]).charAt(x)})});
+  return sshuf(pool,r).slice(0,10).map(function(o){var q=o.q;return{c:o.c,d:o.d,q:q[0],ex:q[5],ch:sshuf([{t:q[1],ok:1},{t:q[2]},{t:q[3]},{t:q[4]}],r)}})}
+var RP="all",RC=0;
+function cmp(a,b){return b.s-a.s||a.d-b.d||a.at-b.at}
+function inP(r,p){if(p==="day")return new Date(r.at).toDateString()===new Date().toDateString();if(p==="week")return Date.now()-r.at<6048e5;return true}
+function sorted(all,k,p){return all.filter(function(r){return r.k===k&&inP(r,p||"all")}).sort(cmp)}
+function getHist(){return ld("qz_hist",ld("qz_rank",[])).slice(-100)}
+function getLb(){var lb=ld("qz_lb",null);if(!lb){lb={};ld("qz_hist",ld("qz_rank",[])).forEach(function(r){lb[r.k]=(lb[r.k]||[]).concat([r]).sort(cmp).slice(0,100)})}return lb}
+function saveGame(rec){
+  var H=getHist(),lb=getLb();H.push(rec);sv("qz_hist",H.slice(-100));
+  lb[rec.k]=(lb[rec.k]||[]).concat([rec]).sort(cmp).slice(0,100);sv("qz_lb",lb);
+  var st=ld("qz_stats",null)||{g:0,sc:0,best:0,cor:0,tot:0,time:0,ms:0,cat:{},mode:{}},ct={};
+  st.g++;st.sc+=rec.s;st.best=Math.max(st.best,rec.s);st.cor+=rec.c;st.tot+=rec.t;st.time+=rec.d;st.ms=Math.max(st.ms,rec.ms);
+  S.list.forEach(function(q){ct[q.c]=(ct[q.c]||0)+1});
+  for(var c in ct){var o=st.cat[c]||{a:0,c:0};o.a+=ct[c];o.c+=S.pc[c];st.cat[c]=o}
+  var m=st.mode[rec.k]||{g:0,best:0};m.g++;m.best=Math.max(m.best,rec.s);st.mode[rec.k]=m;sv("qz_stats",st);
+}
+function row(a,b){return'<tr><td>'+a+'</td><td>'+b+'</td></tr>'}
+function stats(){
+  var st=ld("qz_stats",null),H=getHist().slice().reverse(),h='<h1>내 통계</h1>';
+  if(!st&&!H.length){app.innerHTML=h+'<p class="mu">아직 기록이 없습니다.</p><button class="btn pri" onclick="home()">홈으로</button>';return}
+  st=st||{g:0,sc:0,best:0,cor:0,tot:0,time:0,ms:0,cat:{},mode:{}};
+  var acc=st.tot?Math.round(st.cor/st.tot*100):0;
+  h+='<div class="card"><table>'+row('총 게임 수',st.g+'회')+row('평균 점수',st.g?Math.round(st.sc/st.g):0)+row('최고 점수',st.best)+row('전체 정답률',acc+'% ('+st.cor+' / '+st.tot+')')+row('최대 연속 정답',st.ms)+row('총 플레이 시간',Math.round(st.time/60)+'분')+'</table></div>';
+  h+='<div class="card"><h2>카테고리별 정답률</h2>';
+  for(var k in CATS){var o=st.cat[k]||{a:0,c:0},p=o.a?Math.round(o.c/o.a*100):0;h+='<div class="top"><span>'+CATS[k]+'</span><span>'+p+'% ('+o.c+' / '+o.a+')</span></div><div class="bar" style="margin-bottom:10px"><i style="width:'+p+'%"></i></div>'}
+  h+='</div><div class="card"><h2>최근 게임 기록 <span class="mu">(최근 100개 보관)</span></h2><table><tr><th>날짜</th><th>모드</th><th>점수</th></tr>';
+  H.slice(0,20).forEach(function(r){h+='<tr><td>'+new Date(r.at).toLocaleDateString("ko-KR",{month:"numeric",day:"numeric"})+'</td><td>'+(r.k==="all"?"전체":r.k==="speed"?"스피드":r.k==="daily"?"오늘의 퀴즈":CATS[r.k])+'</td><td>'+r.s+'</td></tr>'});
+  h+='</table><p class="mu" style="margin:8px 0 0">최신 20개만 표시합니다.</p></div><button class="btn" style="text-align:center" onclick="resetData(this)">기록 초기화</button><button class="btn pri" onclick="home()">홈으로</button>';
+  app.innerHTML=h;
+}
+function resetData(b){if(!RC){RC=1;b.textContent="한 번 더 누르면 모든 기록이 삭제됩니다";return}RC=0;["qz_hist","qz_lb","qz_stats","qz_rank"].forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});home()}
+function rank(k,p){p=p||RP;RP=p;
+  var h='<h1>순위표</h1><div class="tabs">'+[["all","전체"],["week","주간"],["day","일일"]].map(function(x){return'<button class="'+(x[0]===p?'on':'')+'" onclick="rank(\''+k+'\',\''+x[0]+'\')">'+x[1]+'</button>'}).join("")+'</div><div class="tabs">',keys=["daily","all","speed","h","s","g","c"];
+  keys.forEach(function(x){h+='<button class="'+(x===k?'on':'')+'" onclick="rank(\''+x+'\')">'+(x==="all"?"전체 도전":x==="speed"?"스피드":x==="daily"?"오늘의 퀴즈":CATS[x])+'</button>'});
+  var l=p==="all"?(getLb()[k]||[]).slice(0,10):sorted(getHist(),k,p).slice(0,10);
+  h+='</div><div class="card">';
+  if(!l.length)h+='<p class="mu" style="margin:0">아직 기록이 없습니다.</p>';
+  else{h+='<table><tr><th>순위</th><th>닉네임</th><th>점수</th><th>시간</th></tr>';l.forEach(function(r,i){h+='<tr><td>'+(i+1)+'</td><td>'+esc(r.n)+'</td><td>'+r.s+'</td><td>'+r.d+'초</td></tr>'});h+='</table>'}
+  h+='</div><p class="mu">상위 10개 표시 · 동점이면 소요 시간이 짧은 순. 주간은 최근 7일, 일일은 오늘 기록이며 최근 100게임에서 집계합니다. 기록은 이 기기의 브라우저에 저장됩니다.</p><button class="btn pri" onclick="home()">홈으로</button>';
+  app.innerHTML=h;
+}
+home();
+</script>
+</body>
+</html>
