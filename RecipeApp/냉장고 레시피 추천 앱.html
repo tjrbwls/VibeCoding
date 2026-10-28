@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>냉장고 레시피</title>
+<style>
+:root{--bg:#faf8f4;--card:#fff;--ink:#1f2a24;--mute:#6b7670;--line:#e5e1d8;--accent:#2f7d5b;--accent-ink:#fff;--soft:#e6f2ec;--warn:#b4541a;--warn-bg:#fbeadd;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181a;--card:#1e2325;--ink:#eef2ef;--mute:#9aa6a0;--line:#2f3639;--accent:#5bbf93;--accent-ink:#0b1a13;--soft:#1f3329;--warn:#f0a56b;--warn-bg:#3a2a1c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15181a;--card:#1e2325;--ink:#eef2ef;--mute:#9aa6a0;--line:#2f3639;--accent:#5bbf93;--accent-ink:#0b1a13;--soft:#1f3329;--warn:#f0a56b;--warn-bg:#3a2a1c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 -apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:4px 0 2px}h2{font-size:1.05rem;margin:0 0 10px}
+.sub{color:var(--mute);font-size:.9rem;margin:0 0 14px}
+nav{display:flex;gap:6px;margin:12px 0;border-bottom:1px solid var(--line)}
+nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;padding:10px 4px;font:inherit;color:var(--mute);cursor:pointer}
+nav button.on{color:var(--accent);border-color:var(--accent);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:26px 12px;text-align:center;color:var(--mute);cursor:pointer}
+.drop.over{border-color:var(--accent);background:var(--soft)}
+.thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.thumbs div{position:relative}.thumbs img{width:76px;height:76px;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.thumbs b{position:absolute;top:-6px;right:-6px;background:var(--ink);color:var(--bg);width:20px;height:20px;border-radius:50%;text-align:center;line-height:20px;font-size:12px;cursor:pointer}
+button.p,button.s{font:inherit;border-radius:10px;padding:10px 16px;cursor:pointer;border:1px solid var(--accent)}
+button.p{background:var(--accent);color:var(--accent-ink);font-weight:600}
+button.s{background:none;color:var(--accent)}
+button:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--soft);border-radius:999px;padding:5px 6px 5px 12px;font-size:.92rem}
+.chip.low{background:var(--warn-bg);color:var(--warn)}
+.chip small{color:var(--mute)}.chip.low small{color:var(--warn)}
+.chip i{font-style:normal;cursor:pointer;width:20px;height:20px;line-height:20px;text-align:center;border-radius:50%;background:rgba(0,0,0,.12)}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:0}
+textarea{width:100%}
+label{display:block;font-size:.85rem;color:var(--mute);margin:10px 0 4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.grid select,.grid input{width:100%}
+.meta{color:var(--mute);font-size:.88rem;display:flex;gap:10px;flex-wrap:wrap}
+.tag{background:var(--soft);color:var(--accent);border-radius:6px;padding:1px 8px;font-size:.8rem}
+.need{color:var(--warn)}
+ol{padding-left:20px;margin:6px 0}li{margin:4px 0}
+.msg{padding:10px 12px;border-radius:10px;background:var(--warn-bg);color:var(--warn);font-size:.9rem;margin:10px 0}
+.ok{background:var(--soft);color:var(--accent)}
+details summary{cursor:pointer;color:var(--accent);margin-top:8px}
+.hide{display:none}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:r .7s linear infinite;vertical-align:-2px;margin-right:6px}
+@keyframes r{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🥬 냉장고 레시피</h1>
+<p class="sub">냉장고 사진 한 장으로 오늘의 메뉴를 정해 보세요.</p>
+<nav id="nav"><button data-t="scan" class="on">① 스캔·추천</button><button data-t="saved">보관함 <span id="cnt"></span></button><button data-t="prof">프로필</button></nav>
+<div id="msg"></div>
+
+<section id="t-scan">
+ <div class="card">
+  <h2>1. 냉장고 사진 올리기</h2>
+  <div class="drop" id="drop">사진을 끌어다 놓거나 눌러서 선택 (최대 5장, JPG·PNG·WEBP)<br><small>모바일에서는 카메라로 바로 촬영할 수 있어요</small></div>
+  <input type="file" id="file" accept="image/*" multiple class="hide">
+  <div class="thumbs" id="thumbs"></div>
+  <div class="row" style="margin-top:12px"><button class="p" id="scanBtn" disabled>재료 인식하기</button><span class="sub" id="scanSt" style="margin:0"></span></div>
+ </div>
+
+ <div class="card" id="ingCard">
+  <h2>2. 인식된 재료 확인·수정</h2>
+  <p class="sub">주황색 항목은 확신이 낮아요. 틀린 건 지우고 빠진 재료는 추가해 주세요.</p>
+  <div class="chips" id="chips"></div>
+  <div class="row"><input id="newIng" placeholder="재료 직접 추가 (예: 두부)" style="flex:1"><button class="s" id="addIng">추가</button></div>
+  <label>요리 조건 (선택)</label>
+  <div class="grid">
+   <select id="time"><option value="">조리 시간 무관</option><option>15분 이내</option><option>30분 이내</option><option>1시간 이내</option></select>
+   <select id="diff"><option value="">난이도 무관</option><option>쉬움</option><option>보통</option><option>어려움</option></select>
+   <select id="style"><option value="">스타일 무관</option><option>한식</option><option>양식</option><option>중식</option><option>일식</option><option>간단 한 그릇</option></select>
+   <input id="serv" type="number" min="1" max="10" placeholder="인원">
+  </div>
+  <div class="row" style="margin-top:14px"><button class="p" id="genBtn" disabled>레시피 추천받기</button><span class="sub" id="genSt" style="margin:0"></span></div>
+ </div>
+
+ <div id="recipes"></div>
+</section>
+
+<section id="t-saved" class="hide"><div id="savedList"></div></section>
+
+<section id="t-prof" class="hide">
+ <div class="card">
+  <h2>내 프로필</h2>
+  <p class="sub">여기서 설정한 알레르기·기피 재료는 모든 추천에 자동 반영됩니다.</p>
+  <div class="grid"><div><label>기본 인원</label><input id="pServ" type="number" min="1" max="10"></div>
+  <div><label>식단 유형</label><select id="pDiet"><option value="">제한 없음</option><option>채식</option><option>저염</option><option>저탄수</option><option>고단백</option></select></div></div>
+  <label>알레르기 재료 (쉼표로 구분)</label><textarea id="pAll" rows="2" placeholder="예: 땅콩, 새우"></textarea>
+  <label>기피 재료</label><textarea id="pDis" rows="2"></textarea>
+  <label>기본 보유 양념</label><textarea id="pStaple" rows="2"></textarea>
+  <div class="row" style="margin-top:12px"><button class="p" id="pSave">프로필 저장</button><span class="sub" id="pSt" style="margin:0"></span></div>
+ </div>
+ <p class="sub">AI 추천 레시피는 참고용이에요. 알레르기가 있다면 재료와 조리 방법을 꼭 직접 확인하세요.</p>
+</section>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const S={files:[],ings:[],recipes:[],saved:[],profile:{servings:2,diet:'',allergies:'',dislikes:'',staples:'소금, 설탕, 간장, 식용유, 후추'}};
+let sample=null,col=null,canImg=false;
+
+function note(t,ok){$('msg').innerHTML=t?`<div class="msg ${ok?'ok':''}">${esc(t)}</div>`:'';}
+
+/* 탭 */
+$('nav').onclick=e=>{const t=e.target.closest('button')?.dataset.t;if(!t)return;
+ document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+ ['scan','saved','prof'].forEach(k=>$('t-'+k).classList.toggle('hide',k!==t));};
+
+/* 런타임 연결 */
+(async()=>{
+ try{sample=await window.claude?.use('sample');}catch(e){}
+ try{canImg=!!(sample&&(await sample.limits()).images);}catch(e){}
+ if(!sample)note('이 화면에서는 AI 기능을 쓸 수 없어요. claude.ai에서 열어 주세요.');
+ else if(!canImg)note('이미지 인식이 비활성화되어 있어요. 재료를 직접 입력해도 레시피 추천은 사용할 수 있어요.');
+ try{
+  const user=await window.claude?.use('user'),db=await window.claude?.use('db');
+  const id=user&&await user.id();
+  if(db&&id){col=db.collection('data/users/'+id);
+   col.onSnapshot(snap=>{S.saved=[];snap.docs.forEach(d=>{const v=d.data();if(d.id==='profile')Object.assign(S.profile,v);else if(v&&v.title)S.saved.push({id:d.id,...v});});
+    S.saved.sort((a,b)=>(b.savedAt||0)-(a.savedAt||0));fillProfile();renderSaved();},()=>{});}
+ }catch(e){}
+ if(!col)$('savedList').innerHTML='<div class="card sub">보관함과 프로필 저장은 claude.ai에 로그인한 상태에서 사용할 수 있어요.</div>';
+ fillProfile();
+})();
+
+/* 1. 이미지 입력 */
+const drop=$('drop'),file=$('file');
+drop.onclick=()=>file.click();
+['dragover','dragenter'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.add('over')}));
+['dragleave','drop'].forEach(ev=>drop.addEventListener(ev,e=>{e.preventDefault();drop.classList.remove('over')}));
+drop.addEventListener('drop',e=>addFiles(e.dataTransfer.files));
+file.onchange=()=>{addFiles(file.files);file.value='';};
+
+async function shrink(f){
+ if(f.size>10*1024*1024)throw new Error('10MB를 넘는 사진은 올릴 수 없어요.');
+ try{const bm=await createImageBitmap(f);const k=Math.min(1,1600/Math.max(bm.width,bm.height));
+  const c=document.createElement('canvas');c.width=Math.round(bm.width*k);c.height=Math.round(bm.height*k);
+  c.getContext('2d').drawImage(bm,0,0,c.width,c.height);
+  return await new Promise(r=>c.toBlob(r,'image/jpeg',.85));}catch(e){return f;}
+}
+async function addFiles(list){
+ for(const f of list){
+  if(S.files.length>=5){note('사진은 최대 5장까지 올릴 수 있어요.');break;}
+  if(!/^image\//.test(f.type)&&!/\.heic$/i.test(f.name)){note('이미지 파일만 올릴 수 있어요.');continue;}
+  try{const b=await shrink(f);S.files.push({blob:b,url:URL.createObjectURL(b)});note('');}catch(e){note(e.message);}
+ }
+ drawThumbs();
+}
+function drawThumbs(){
+ $('thumbs').innerHTML=S.files.map((f,i)=>`<div><img src="${f.url}" alt="업로드 사진 ${i+1}"><b data-i="${i}">×</b></div>`).join('');
+ $('scanBtn').disabled=!S.files.length||!canImg;
+}
+$('thumbs').onclick=e=>{const i=e.target.dataset.i;if(i!==undefined){S.files.splice(+i,1);drawThumbs();}};
+
+/* 재료 인식 */
+$('scanBtn').onclick=async()=>{
+ $('scanBtn').disabled=true;$('scanSt').innerHTML='<span class="spin"></span>인식 중... (약 10초)';
+ try{
+  const r=await sample.json(
+   '냉장고/식재료 사진에서 보이는 식재료를 모두 찾아 JSON 배열로만 답하세요. 형식: [{"name":"재료명(한국어)","qty":"대략적인 수량 또는 빈 문자열","conf":"high|mid|low"}]. 가려져 있거나 확실치 않으면 conf를 low로 표시하세요. 식재료가 아닌 물건은 제외하세요. 식재료가 전혀 없으면 빈 배열을 반환하세요.',
+   {images:S.files.map(f=>f.blob),modelTier:'quick'});
+  const arr=Array.isArray(r)?r:[];
+  if(!arr.length){note('식재료를 찾지 못했어요. 더 밝고 가까이서 다시 찍거나 아래에 직접 입력해 주세요.');}
+  else{note('');}
+  arr.forEach(x=>{if(x&&x.name&&!S.ings.some(i=>i.name===x.name))S.ings.push({name:String(x.name),qty:x.qty||'',conf:x.conf||'mid'});});
+  drawIngs();
+ }catch(e){note(e&&e.code==='not_granted'?'AI 사용 권한이 필요해요.':'인식에 실패했어요. 잠시 후 다시 시도하거나 재료를 직접 입력해 주세요.');}
+ $('scanSt').textContent='';$('scanBtn').disabled=!S.files.length;
+};
+
+/* 2. 재료 편집 */
+function drawIngs(){
+ $('chips').innerHTML=S.ings.map((x,i)=>`<span class="chip ${x.conf==='low'?'low':''}">${esc(x.name)}${x.qty?` <small>${esc(x.qty)}</small>`:''}<i data-i="${i}" title="삭제">×</i></span>`).join('')||'<span class="sub">아직 재료가 없어요.</span>';
+ $('genBtn').disabled=!S.ings.length||!sample;
+}
+$('chips').onclick=e=>{const i=e.target.dataset.i;if(i!==undefined){S.ings.splice(+i,1);drawIngs();}};
+function addIng(){const v=$('newIng').value.trim();if(!v)return;
+ v.split(/[,，]/).map(s=>s.trim()).filter(Boolean).forEach(n=>{if(!S.ings.some(i=>i.name===n))S.ings.push({name:n,qty:'',conf:'high'});});
+ $('newIng').value='';drawIngs();}
+$('addIng').onclick=addIng;$('newIng').onkeydown=e=>{if(e.key==='Enter')addIng();};
+drawIngs();
+
+/* 3. 레시피 생성 */
+$('genBtn').onclick=async()=>{
+ const p=S.profile,c=[['조리 시간',$('time').value],['난이도',$('diff').value],['스타일',$('style').value],['식단',p.diet]].filter(x=>x[1]).map(x=>x.join(': ')).join(', ');
+ const serv=+$('serv').value||+p.servings||2;
+ const prompt=`당신은 가정 요리 전문가입니다. 아래 재료로 만들 수 있는 현실적인 레시피 3개를 JSON 배열로만 답하세요.
+보유 재료: ${S.ings.map(i=>i.name+(i.qty?`(${i.qty})`:'')).join(', ')}
+기본 보유 양념: ${p.staples||'없음'}
+인원: ${serv}명
+조건: ${c||'없음'}
+절대 사용 금지(알레르기): ${p.allergies||'없음'}
+가급적 피할 재료: ${p.dislikes||'없음'}
+규칙: 알레르기 재료는 어떤 단계에도 넣지 말 것. 보유 재료 활용도가 높을 것. 안전한 조리 온도·시간을 지킬 것.
+형식: [{"title":"","desc":"한 줄 설명","time":"예: 20분","difficulty":"쉬움|보통|어려움","servings":${serv},"have":["사용하는 보유 재료"],"need":["추가로 필요한 재료"],"steps":["단계1","단계2"],"tip":""}]`;
+ $('genBtn').disabled=true;$('genSt').innerHTML='<span class="spin"></span>레시피 만드는 중...';
+ try{
+  const r=await sample.json(prompt,{modelTier:'default',cache:false});
+  const bad=(p.allergies||'').split(/[,，]/).map(s=>s.trim()).filter(Boolean);
+  S.recipes=(Array.isArray(r)?r:[]).filter(x=>x&&x.title&&Array.isArray(x.steps)&&!bad.some(a=>JSON.stringify(x).includes(a)));
+  if(!S.recipes.length)note('조건에 맞는 레시피를 만들지 못했어요. 조건을 바꿔 다시 시도해 주세요.');else note('');
+  drawRecipes();
+ }catch(e){note('레시피 생성에 실패했어요. 잠시 후 다시 시도해 주세요.');}
+ $('genSt').textContent='';$('genBtn').disabled=!S.ings.length;
+};
+
+function recipeHTML(r,i,mode){
+ const total=(r.have||[]).length+(r.need||[]).length;
+ return `<div class="card"><h2>${esc(r.title)}</h2><p class="sub" style="margin-bottom:6px">${esc(r.desc)}</p>
+ <div class="meta"><span>⏱ ${esc(r.time)}</span><span class="tag">${esc(r.difficulty)}</span><span>${esc(r.servings)}인분</span>${mode==='gen'?`<span>보유 재료 ${(r.have||[]).length}/${total}개 사용</span>`:''}</div>
+ <p style="margin:10px 0 4px"><b>재료</b> ${(r.have||[]).map(esc).join(', ')}${(r.need||[]).length?` <span class="need">+ 추가 필요: ${r.need.map(esc).join(', ')}</span>`:''}</p>
+ <details><summary>조리 순서 보기</summary><ol>${r.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>${r.tip?`<p class="sub">💡 ${esc(r.tip)}</p>`:''}</details>
+ <div class="row" style="margin-top:12px">${mode==='gen'
+  ?`<button class="s" data-save="${i}">보관함에 저장</button>`
+  :`<button class="s" data-fav="${esc(r.id)}">${r.fav?'★ 즐겨찾기':'☆ 즐겨찾기'}</button><button class="s" data-del="${esc(r.id)}">삭제</button>`}</div>
+ ${mode==='saved'?`<label>메모</label><textarea data-memo="${esc(r.id)}" rows="2" placeholder="나만의 메모">${esc(r.memo||'')}</textarea>`:''}</div>`;
+}
+function drawRecipes(){$('recipes').innerHTML=S.recipes.map((r,i)=>recipeHTML(r,i,'gen')).join('');}
+
+/* 4. 저장·보관함 */
+$('recipes').onclick=async e=>{const i=e.target.dataset.save;if(i===undefined)return;
+ if(!col){note('저장하려면 claude.ai에 로그인해 주세요.');return;}
+ try{const r=S.recipes[+i];await col.doc('r'+Date.now()).set({...r,fav:false,memo:'',savedAt:Date.now()});
+  e.target.textContent='✓ 저장됨';e.target.disabled=true;}catch(err){note('저장에 실패했어요.');}};
+function renderSaved(){
+ $('cnt').textContent=S.saved.length?`(${S.saved.length})`:'';
+ $('savedList').innerHTML=S.saved.length?S.saved.map(r=>recipeHTML(r,0,'saved')).join(''):'<div class="card sub">저장한 레시피가 아직 없어요.</div>';
+}
+$('savedList').onclick=async e=>{if(!col)return;const d=e.target.dataset;
+ try{if(d.del&&confirm('이 레시피를 삭제할까요?'))await col.doc(d.del).delete();
+  if(d.fav){const r=S.saved.find(x=>x.id===d.fav);await col.doc(d.fav).update({fav:!r.fav});}}catch(err){note('변경에 실패했어요.');}};
+$('savedList').onchange=async e=>{const id=e.target.dataset.memo;if(id&&col){try{await col.doc(id).update({memo:e.target.value});}catch(err){}}};
+
+/* 5. 프로필 */
+function fillProfile(){const p=S.profile;
+ $('pServ').value=p.servings||2;$('pDiet').value=p.diet||'';$('pAll').value=p.allergies||'';$('pDis').value=p.dislikes||'';$('pStaple').value=p.staples||'';
+ if(!$('serv').value)$('serv').placeholder='인원 (기본 '+(p.servings||2)+')';}
+$('pSave').onclick=async()=>{
+ const p={servings:+$('pServ').value||2,diet:$('pDiet').value,allergies:$('pAll').value.trim(),dislikes:$('pDis').value.trim(),staples:$('pStaple').value.trim()};
+ Object.assign(S.profile,p);
+ if(!col){$('pSt').textContent='이번 방문에만 적용돼요 (로그인하면 저장됩니다).';return;}
+ try{await col.doc('profile').set(p);$('pSt').textContent='저장했어요.';}catch(e){$('pSt').textContent='저장에 실패했어요.';}
+};
+</script>
+</body>
+</html>
